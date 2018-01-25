@@ -1,0 +1,43 @@
+LaunchIntent Logo
+LaunchIntent Logo quiz
+LaunchIntent Launch
+LaunchIntent Start
+LaunchIntent begin
+LaunchIntent quiz me
+
+GuessIntent {Logo}
+GuessIntent I think it is {Logo}
+GuessIntent Is it {Logo}
+GuessIntent It's probably {Logo}
+GuessIntent Probably {Logo}
+GuessIntent Maybe {Logo}
+GuessIntent Maybe it's {Logo}
+GuessIntent Definitely {Logo}
+GuessIntent Perhaps {Logo}
+GuessIntent Perhaps it's {Logo}
+GuessIntent Umm {Logo}
+GuessIntent I know {Logo}
+GuessIntent I know  it's {Logo}
+GuessIntent I think it's {Logo}
+GuessIntent I dont know but I think it's {Logo}
+GuessIntent I dont know but maybe it's {Logo}
+GuessIntent I dont know but perhaps it's {Logo}
+
+ShowMissedIntent what Logo did I miss
+ShowMissedIntent which Logo did I get wrong
+ShowMissedIntent missed Logo
+ShowMissedIntent missed
+ShowMissedIntent missed guesses
+ShowMissedIntent incorrect Logo list
+ShowMissedIntent missed list
+ShowMissedIntent wrong list
+ShowMissedIntent which did I get wrong
+ShowMissedIntent what did I miss
+ShowMissedIntent what did I get wrong
+ShowMissedIntent show me what I got wrong
+ShowMissedIntent show me what I missed
+ShowMissedIntent show me the wrong ones
+ShowMissedIntent show missed list
+ShowMissedIntent tell me what I got wrong
+ShowMissedIntent tell me the wrong ones
+ShowMissedIntent tell missed list

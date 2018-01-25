@@ -1,0 +1,142 @@
+{
+  "languageModel": {
+    "types": [
+      {
+        "name": "LOGO_LIST",
+        "values": [
+          {
+            "id": "5",
+            "name": {
+              "value": "Apple",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "4",
+            "name": {
+              "value": "Intel",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "3",
+            "name": {
+              "value": "Chrome",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "2",
+            "name": {
+              "value": "Facebook",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "1",
+            "name": {
+              "value": "Microsoft",
+              "synonyms": []
+            }
+          }
+        ]
+      }
+    ],
+    "intents": [
+      {
+        "name": "AMAZON.CancelIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.HelpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.MoreIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.NavigateSettingsIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.NextIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.PageDownIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.PageUpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.PauseIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.PreviousIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.ScrollDownIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.ScrollLeftIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.ScrollRightIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.ScrollUpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StartOverIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StopIntent",
+        "samples": []
+      },
+      {
+        "name": "AnswerIntent",
+        "samples": ["{Logo}"],
+        "slots": [
+          {
+            "name": "Logo",
+            "type": "LOGO_LIST",
+              "samples": []
+          }
+        ]
+      },
+      {
+        "name": "LaunchIntent",
+        "samples": [
+          "Start",
+          "Launc",
+          "Launch"
+        ],
+        "slots": []
+      },
+      {
+        "name": "QuizIntent",
+        "samples": [
+          "start a quiz",
+          "start a quiz game",
+          "and start a quiz",
+          "and quiz me",
+          "for a quiz",
+          "a quiz",
+          "quiz"
+        ],
+        "slots": []
+      }
+    ],
+    "invocationName": "logo game"
+  }
+}
