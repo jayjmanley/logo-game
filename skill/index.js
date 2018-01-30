@@ -20,6 +20,7 @@ function getSpeechDescription(item)
 
 function getQuestion(counter)
 {
+    counter = counter + 1;
     if(counter % 10 == 1){
        return "Here is your " + counter + "st question.  What is this logo?";
     }
@@ -73,7 +74,7 @@ const speechConsWrong = ["Argh", "Aw man", "Blarg", "Blast", "Boo", "Bummer", "D
 "Mamma mia", "Oh boy", "Oh dear", "Oof", "Ouch", "Ruh roh", "Shucks", "Uh oh", "Wah wah", "Whoops a daisy", "Yikes"];
 
 //This is the welcome message for when a user starts the skill without a specific intent.
-const WELCOME_MESSAGE = "Welcome to the Logo Quiz Game!  Please choose a level!";
+const WELCOME_MESSAGE = "Welcome to the Logo Quiz Game! Are you ready to start?";
 
 //This is the message a user will hear when they start a quiz.
 const START_QUIZ_MESSAGE = "OK.  Get ready!";
@@ -119,11 +120,11 @@ function getBackgroundImage() { return "./background.jpg"; }
 //TODO: Replace this data with your own.
 //=========================================================================================================================================
 const data = [
-                {Name: "Intel",        logo: "intel", Level: "easy"},
-                {Name: "Facebook",        logo: "facebook", Level: "easy"},
-                {Name: "Chrome",        logo:"chrome", Level: "easy"},
-                {Name: "Microsoft",        logo:"microsoft", Level: "easy"},
-                {Name: "Apple",        logo:"apple",Level: "easy"     },
+                {Name: "Intel",        logo: "intel", Level: "1"},
+                {Name: "Facebook",        logo: "facebook", Level: "1"},
+                {Name: "Chrome",        logo:"chrome", Level: "1"},
+                {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                {Name: "Apple",        logo:"apple",Level: "1"     },
             ];
 
 //=========================================================================================================================================
@@ -175,12 +176,15 @@ const handlers = {
 const startHandlers = Alexa.CreateStateHandler(states.START,{
     "Start": function() {
         this.response.speak(WELCOME_MESSAGE).listen(HELP_MESSAGE);
-        this.emit(":responseReady");
+        var level = this.emit(":responseReady");
+        console.log(level);
+        this.emit(level);
     },
     "AnswerIntent": function() {
        console.log("Answer Intent event: "+JSON.stringify(this.event));
+        
         var item = getItem(this.event.request.intent.slots);
-
+        
         if (item && item[Object.getOwnPropertyNames(data[0])[0]] !== undefined) {
             if (supportsDisplay.call(this)||isSimulator.call(this)) {
               //this device supports a display
@@ -264,15 +268,27 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
         this.attributes["response"] = "";
         this.attributes["counter"] = 0;
         this.attributes["quizscore"] = 0;
+        this.attributes["guesses"] = 4;
+        this.attributes["first"] = 0;
         this.emitWithState("AskQuestion");
     },
     "AskQuestion": function() {
+        
         console.log("in askQuestion: "+JSON.stringify(this.attributes));
-        if (this.attributes["counter"] == 0)
+        if ((this.attributes["counter"] == 0) && (this.attributes["guesses"] == 4))
         {
             this.attributes["response"] = START_QUIZ_MESSAGE + " ";
         }
+        
 
+        if(this.attributes["guesses"] > 2){
+            if(this.attributes["first"] != 0){
+                this.attributes["counter"]++;
+            }
+            console.log(this.attributes["counter"]);
+            this.attributes["guesses"] = 0;
+        }
+        this.attributes["first"] = 1; 
         var random = getRandom(0, data.length-1);
         var item = data[this.attributes["counter"]];
 
@@ -282,41 +298,20 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
         // store correct answers in session attributes
         this.attributes["quizitem"] = item;
         this.attributes["quizproperty"] = property;
-        this.attributes["counter"]++;
-
-        // Create list of possible answers to display on Echo Show (3 wrong, 1 right).
-
-        var answerList = [];
-        answerList.push(item[property]);
-        for (var i = 0; i < 2; i++) {
-          var randomItem = data[getRandom(0, data.length-1)];
-          answerList.push(randomItem[property]);
-          //TODO could push same the same item more than once
-        }
-        //console.log("answerList: "+JSON.stringify(answerList));
-
+        console.log(this.attributes["guesses"]);
+        console.log(this.attributes["counter"]);
+        
+        
         var question = getQuestion(this.attributes["counter"], property, item);
-        var speech = this.attributes["response"] + question;
-
-
+        
+        
+        if(this.attributes["guesses"] == 0){
+            var speech = this.attributes["response"] + question;
+        } else {
+            var speech = this.attributes["response"];
+        }
+        
         if (USE_IMAGES) {
-
-        //TODO if (this.event.context.System.device.supportedInterfaces.Display) {
-              var shuffledMultipleChoiceList = shuffle(answerList);
-
-              let listItems = shuffledMultipleChoiceList.map((x) => {
-                return { "token" : x,
-                  "textContent" : {
-                    "primaryText":
-                    {
-                      "text": x,
-                      "type": "PlainText"
-                    }
-                  }
-                }
-              })
-
-
 
               let content = {
                     "hasDisplaySpeechOutput" : speech,
@@ -357,42 +352,37 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
     "AnswerIntent": function() {
         var response = "";
         var item = this.attributes["quizitem"];
-        
         var property = this.attributes["quizproperty"];
-        
-        console.log(item[property]);
-        
-        var correct = compareSlots.call(this, item[property]);
-        
-        console.log(this.event.request);
-        
-        if (correct)
-        {
-            response = getSpeechCon(true);
-            this.attributes["quizscore"]++;
-        }
-        else
-        {
-            response = getSpeechCon(false);
-        }
 
-        response += getAnswer(property, item);
+            console.log(item[property]);
 
-        if (this.attributes["counter"] < data.length)
-        {
-            response += getCurrentScore(this.attributes["quizscore"], this.attributes["counter"]);
-            this.attributes["response"] = response;
-            this.emitWithState("AskQuestion");
-        }
-        else
-        {
+            var correct = compareSlots.call(this, item[property]);
+
+            console.log(this.event.request);
+
+
+            if (correct)
+            {
+                response = getSpeechCon(true);
+                this.attributes["quizscore"]++;
+                this.attributes["guesses"] = 3;
+            }
+            else
+            {
+                console.log(this.attributes["guesses"]);
+                response = getSpeechCon(false);
+               
+                this.attributes["guesses"]++;
+                
+            }
+        if (this.attributes["counter"] >= 4)        {
           response += getFinalScore(this.attributes["quizscore"], this.attributes["counter"]);
           if (supportsDisplay.call(this)||isSimulator.call(this)) {
             //this device supports a display
 
             let content = {
                   "hasDisplaySpeechOutput" : response + " " + EXIT_SKILL_MESSAGE,
-                  "bodyTemplateContent" : getFinalScore(this.attributes["quizscore"], this.attributes["counter"]),
+                  "bodyTemplateContent" : getFinalScore(this.attributes["quizscore"], (this.attributes["counter"]+1)),
                   "templateToken" : "FinalScoreView",
                   "askOrTell": ":tell",
                   "sessionAttributes" : this.attributes
@@ -410,6 +400,21 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
             this.emit(":responseReady");
           }
         }
+       
+
+        if (this.attributes["guesses"] > 2)
+        {
+            response += getAnswer(property, item);
+            response += getCurrentScore(this.attributes["quizscore"], this.attributes["counter"]);
+            this.attributes["response"] = response;
+            this.emitWithState("AskQuestion");
+        } else {
+             response += "Try again! ";
+            this.attributes["response"] = response;
+            this.emitWithState("AskQuestion");
+        }
+        
+        
     },
     "AMAZON.StartOverIntent": function() {
         this.emitWithState("Quiz");
