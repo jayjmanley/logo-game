@@ -2,6 +2,74 @@
   "languageModel": {
     "types": [
       {
+        "name": "LEVEL_LIST",
+        "values": [
+          {
+            "id": null,
+            "name": {
+              "value": "1",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "2",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "3",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "4",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "5",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "6",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "7",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "8",
+              "synonyms": []
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "9",
+              "synonyms": []
+            }
+          }
+        ]
+      },
+      {
         "name": "LOGO_LIST",
         "values": [
           {
@@ -105,12 +173,13 @@
       },
       {
         "name": "AnswerIntent",
-        "samples": ["{Logo}"],
+        "samples": [
+          "{Logo}"
+        ],
         "slots": [
           {
             "name": "Logo",
-            "type": "LOGO_LIST",
-              "samples": []
+            "type": "LOGO_LIST"
           }
         ]
       },
@@ -132,9 +201,18 @@
           "and quiz me",
           "for a quiz",
           "a quiz",
-          "quiz"
+          "quiz",
+          "Yes",
+          "Yeah",
+          "Yep",
+          "{Level}"
         ],
-        "slots": []
+        "slots": [
+          {
+            "name": "Level",
+            "type": "LEVEL_LIST"
+          }
+        ]
       }
     ],
     "invocationName": "logo game"

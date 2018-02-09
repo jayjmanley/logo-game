@@ -18,17 +18,104 @@ function getSpeechDescription(item)
 }
 
 
+function getData(level)
+{
+    switch(level){
+        case "1":
+            return [
+                {Name: "Intel",        logo: "intel", Level: "1"},
+                {Name: "Facebook",        logo: "facebook", Level: "1"},
+                {Name: "Chrome",        logo:"chrome", Level: "1"},
+                {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                {Name: "Apple",        logo:"apple",Level: "1"     }
+            ];
+        case "2":
+            return [
+                {Name: "Nvidia",        logo: "nvidia", Level: "2"},
+                {Name: "Pepsi",        logo: "pepsi", Level: "2"},
+                {Name: "Napster",        logo:"napster", Level: "2"},
+                {Name: "Louis-Vuitton",        logo:"louis vuitton", Level: "2"},
+                {Name: "Tommy-Hilfiger",        logo:"tommy hilfiger",Level: "2"     }
+            ];
+        case "3":
+        return [
+                    {Name: "Intel",        logo: "intel", Level: "1"},
+                    {Name: "Facebook",        logo: "facebook", Level: "1"},
+                    {Name: "Chrome",        logo:"chrome", Level: "1"},
+                    {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                    {Name: "Apple",        logo:"apple",Level: "1"     }];
+
+        case "4":
+            return [
+                        {Name: "Intel",        logo: "intel", Level: "1"},
+                        {Name: "Facebook",        logo: "facebook", Level: "1"},
+                        {Name: "Chrome",        logo:"chrome", Level: "1"},
+                        {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                        {Name: "Apple",        logo:"apple",Level: "1"     }];
+        case "5":
+            return [
+                {Name: "Intel",        logo: "intel", Level: "1"},
+                {Name: "Facebook",        logo: "facebook", Level: "1"},
+                {Name: "Chrome",        logo:"chrome", Level: "1"},
+                {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                {Name: "Apple",        logo:"apple",Level: "1"     }
+            ];
+        case "6":
+            return [
+                    {Name: "Intel",        logo: "intel", Level: "1"},
+                    {Name: "Facebook",        logo: "facebook", Level: "1"},
+                    {Name: "Chrome",        logo:"chrome", Level: "1"},
+                    {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                    {Name: "Apple",        logo:"apple",Level: "1"     }
+];
+        case "7":
+            return [
+                    {Name: "Intel",        logo: "intel", Level: "1"},
+                    {Name: "Facebook",        logo: "facebook", Level: "1"},
+                    {Name: "Chrome",        logo:"chrome", Level: "1"},
+                    {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                    {Name: "Apple",        logo:"apple",Level: "1"     }];
+
+        case "8":
+            return [
+                    {Name: "Intel",        logo: "intel", Level: "1"},
+                    {Name: "Facebook",        logo: "facebook", Level: "1"},
+                    {Name: "Chrome",        logo:"chrome", Level: "1"},
+                    {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                    {Name: "Apple",        logo:"apple",Level: "1"     }];
+
+        case "9":
+            return [
+                    {Name: "Intel",        logo: "intel", Level: "1"},
+                    {Name: "Facebook",        logo: "facebook", Level: "1"},
+                    {Name: "Chrome",        logo:"chrome", Level: "1"},
+                    {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                    {Name: "Apple",        logo:"apple",Level: "1"     }];
+
+        case "10":
+            return [
+                    {Name: "Intel",        logo: "intel", Level: "1"},
+                    {Name: "Facebook",        logo: "facebook", Level: "1"},
+                    {Name: "Chrome",        logo:"chrome", Level: "1"},
+                    {Name: "Microsoft",        logo:"microsoft", Level: "1"},
+                    {Name: "Apple",        logo:"apple",Level: "1"     }];
+
+        default:
+            return 100;
+    }
+}
+
 function getQuestion(counter)
 {
     counter = counter + 1;
     if(counter % 10 == 1){
        return "Here is your " + counter + "st question.  What is this logo?";
     }
-    
+
     else if(counter % 10 == 2){
        return "Here is your " + counter + "nd question.  What is this logo?";
     }
-    
+
     else if(counter % 10 == 3){
        return "Here is your " + counter + "rd question.  What is this logo?";
     } else {
@@ -59,7 +146,7 @@ function getQuestion(counter)
 function getAnswer(property, item)
 {
             return "The logo is " + item[property] + ". ";
-        
+
 }
 
 //This is a list of positive speechcons that this skill will use when a user gets a correct answer.  For a full list of supported
@@ -94,7 +181,7 @@ const HELP_MESSAGE = "This is a logo guessing game, levels range from easy to ha
 function getBadAnswer(item) { return "I'm sorry. " + item + " is not something I know very much about in this skill. " + HELP_MESSAGE; }
 
 //This is the message a user will receive after each question of a quiz.  It reminds them of their current score.
-function getCurrentScore(score, counter) { return "Your current score is " + score + " out of " + counter + ". "; }
+function getCurrentScore(score, counter) { return "Your current score is " + score + " out of " + (counter +1) + ". "; }
 
 //This is the message a user will receive after they complete a quiz.  It tells them their final score.
 function getFinalScore(score, counter) { return "Your final score is " + score + " out of " + counter + ". "; }
@@ -111,7 +198,7 @@ function getCardTitle(item) { return "Guess the Logo!"}
 
 //This is the small version of the card image.  We use our data as the naming convention for our images so that we can dynamically
 //generate the URL to the image.  The small image should be 720x400 in dimension.
-function getImage(item) { return "https://s3-us-west-2.amazonaws.com/logo-game/logo-game/" + item.logo + ".jpg"; }
+function getImage(item) { return "https://s3-us-west-2.amazonaws.com/logo-game/logo-game/" + item.Level + "/" + item.logo + ".jpg"; }
 
 
 // backgroundImage for Echo Show body templates
@@ -119,13 +206,8 @@ function getBackgroundImage() { return "./background.jpg"; }
 //=========================================================================================================================================
 //TODO: Replace this data with your own.
 //=========================================================================================================================================
-const data = [
-                {Name: "Intel",        logo: "intel", Level: "1"},
-                {Name: "Facebook",        logo: "facebook", Level: "1"},
-                {Name: "Chrome",        logo:"chrome", Level: "1"},
-                {Name: "Microsoft",        logo:"microsoft", Level: "1"},
-                {Name: "Apple",        logo:"apple",Level: "1"     },
-            ];
+
+
 
 //=========================================================================================================================================
 //Editing anything below this line might break your skill.
@@ -154,7 +236,7 @@ const handlers = {
     "AnswerIntent": function() {
         this.handler.state = states.QUIZ;
         this.emitWithState("AnswerIntent");
-    }, 
+    },
     "AMAZON.HelpIntent": function() {
         this.response.speak(HELP_MESSAGE).listen(HELP_MESSAGE);
         this.emit(":responseReady");
@@ -176,15 +258,15 @@ const handlers = {
 const startHandlers = Alexa.CreateStateHandler(states.START,{
     "Start": function() {
         this.response.speak(WELCOME_MESSAGE).listen(HELP_MESSAGE);
-        var level = this.emit(":responseReady");
-        console.log(level);
-        this.emit(level);
+        this.emit(":responseReady");
     },
     "AnswerIntent": function() {
        console.log("Answer Intent event: "+JSON.stringify(this.event));
-        
+
         var item = getItem(this.event.request.intent.slots);
-        
+
+        console.log(getItem(this.event.request.intent.slots));
+
         if (item && item[Object.getOwnPropertyNames(data[0])[0]] !== undefined) {
             if (supportsDisplay.call(this)||isSimulator.call(this)) {
               //this device supports a display
@@ -228,6 +310,12 @@ const startHandlers = Alexa.CreateStateHandler(states.START,{
     "QuizIntent": function() {
         this.handler.state = states.QUIZ;
         this.attributes['STATE'] = this.handler.state;
+
+        console.log("asdfsaf " + this.event.request.intent.slots);
+        console.log("LEVEL " + getLevel(this.event.request.intent.slots));
+        this.attributes["level"] = getLevel(this.event.request.intent.slots);
+        global.data = getData(this.attributes["level"]);
+
         console.log("IN QUIZ INTENT " + this.handler.state);
         console.log("IN QUIZ INTENT " + JSON.stringify(this.attributes));
         this.emitWithState("Quiz");
@@ -265,21 +353,27 @@ const startHandlers = Alexa.CreateStateHandler(states.START,{
 
 const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
     "Quiz": function() {
+
         this.attributes["response"] = "";
         this.attributes["counter"] = 0;
         this.attributes["quizscore"] = 0;
         this.attributes["guesses"] = 4;
         this.attributes["first"] = 0;
         this.emitWithState("AskQuestion");
+
+
     },
     "AskQuestion": function() {
-        
+
         console.log("in askQuestion: "+JSON.stringify(this.attributes));
+        if(this.attributes["counter"] == 5) {
+            this.attributes["counter"] = 0;
+        }
         if ((this.attributes["counter"] == 0) && (this.attributes["guesses"] == 4))
         {
             this.attributes["response"] = START_QUIZ_MESSAGE + " ";
         }
-        
+
 
         if(this.attributes["guesses"] > 2){
             if(this.attributes["first"] != 0){
@@ -288,8 +382,10 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
             console.log(this.attributes["counter"]);
             this.attributes["guesses"] = 0;
         }
-        this.attributes["first"] = 1; 
+        this.attributes["first"] = 1;
         var random = getRandom(0, data.length-1);
+
+
         var item = data[this.attributes["counter"]];
 
         var propertyArray = Object.getOwnPropertyNames(item);
@@ -300,17 +396,17 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
         this.attributes["quizproperty"] = property;
         console.log(this.attributes["guesses"]);
         console.log(this.attributes["counter"]);
-        
-        
+
+
         var question = getQuestion(this.attributes["counter"], property, item);
-        
-        
+
+
         if(this.attributes["guesses"] == 0){
             var speech = this.attributes["response"] + question;
         } else {
             var speech = this.attributes["response"];
         }
-        
+
         if (USE_IMAGES) {
 
               let content = {
@@ -328,27 +424,26 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
                     "image" : getImage(this.attributes["quizitem"]),
                     "sessionAttributes" : this.attributes
                 };
-
                 if (USE_IMAGES) {
-                  content["backgroundImageLargeUrl"]=getImage(this.attributes["quizitem"]);
-                }
-                console.log("ASK Question event: "+JSON.stringify(this.event));
+                                  content["backgroundImageLargeUrl"]=getImage(this.attributes["quizitem"]);
+                                }
+                                console.log("ASK Question event: "+JSON.stringify(this.event));
 
-                renderTemplate.call(this,content);
+                                renderTemplate.call(this,content);
 
 
 
-        } else {
-            this.response.speak(speech).listen(question);
-            this.emit(":responseReady");
-        }
+                        } else {
+                            this.response.speak(speech).listen(question);
+                            this.emit(":responseReady");
+                        }
 
-    },
-    "ElementSelected" : function() {
-      // We will look for the value in this.event.request.token in the AnswerIntent call to compareSlots
-      console.log("in ElementSelected QUIZ state");
-      this.emitWithState("AnswerIntent");
-    },
+                    },
+      "ElementSelected" : function() {
+     // We will look for the value in this.event.request.token in the AnswerIntent call to compareSlots
+     console.log("in ElementSelected QUIZ state");
+     this.emitWithState("AnswerIntent");
+   },
     "AnswerIntent": function() {
         var response = "";
         var item = this.attributes["quizitem"];
@@ -358,7 +453,7 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
 
             var correct = compareSlots.call(this, item[property]);
 
-            console.log(this.event.request);
+            console.log("ASDASDASDASDAS" + this.event.request);
 
 
             if (correct)
@@ -371,12 +466,12 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
             {
                 console.log(this.attributes["guesses"]);
                 response = getSpeechCon(false);
-               
+
                 this.attributes["guesses"]++;
-                
+
             }
         if (this.attributes["counter"] >= 4)        {
-          response += getFinalScore(this.attributes["quizscore"], this.attributes["counter"]);
+          response += getFinalScore(this.attributes["quizscore"], (this.attributes["counter"] + 1));
           if (supportsDisplay.call(this)||isSimulator.call(this)) {
             //this device supports a display
 
@@ -390,6 +485,7 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
               if (USE_IMAGES) {
                 content["backgroundImageUrl"]=getImage(item);
               }
+
               renderTemplate.call(this,content);
 
 
@@ -400,10 +496,10 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
             this.emit(":responseReady");
           }
         }
-       
 
-        if (this.attributes["guesses"] > 2)
-        {
+
+        else if (this.attributes["guesses"] > 2) {
+
             response += getAnswer(property, item);
             response += getCurrentScore(this.attributes["quizscore"], this.attributes["counter"]);
             this.attributes["response"] = response;
@@ -413,9 +509,9 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
             this.attributes["response"] = response;
             this.emitWithState("AskQuestion");
         }
-        
-        
-    },
+        },
+
+
     "AMAZON.StartOverIntent": function() {
         this.emitWithState("Quiz");
     },
@@ -454,15 +550,24 @@ function compareSlots(value) {
     this.event.request &&
     this.event.request.token;
 
+
+
   if(isSlot){
+
+      console.log("SLOTS" + value.toString().toLowerCase());
   let slots=this.event.request.intent.slots;
+
     for (var slot in slots){
+
         if (slots[slot].value != undefined){
+              console.log("SLOTS" + slots[slot].value.toString().toLowerCase());
             if (slots[slot].value.toString().toLowerCase() == value.toString().toLowerCase()) return true;
         }
     }
   }
   if(isToken){
+      console.log("TOKEN" + this.event.request.token.toString().toLowerCase());
+  console.log("TOKEN " + value.toString().toLowerCase());
     if (this.event.request.token.toString().toLowerCase() == value.toString().toLowerCase()) return true;
     console.log(this.event.request.token.toString().toLowerCase());
   }
@@ -524,6 +629,20 @@ function getItem(slots)
         }
     }
     return value;
+}
+
+function getLevel(slots) {
+    var value;
+
+    for (var slot in slots){
+
+        if (slots[slot].value != undefined){
+            value = slots[slot].value;
+            return value;
+        } else {
+            return "That is not a level!";
+        }
+    }
 }
 
 function getSpeechCon(type)
@@ -603,7 +722,7 @@ function renderTemplate (content) {
                       "text": "<font size = '7'>"+content.bodyTemplateContent+"</font>"
                     }
                   }
-                    
+
                 }
               },{
                   "type": "Hint",
@@ -630,7 +749,7 @@ function renderTemplate (content) {
 
         }
 
-        
+
 
 
          //Send the response to Alexa
@@ -648,7 +767,7 @@ function renderTemplate (content) {
                      "type": "BodyTemplate7",
                      "title": content.listTemplateTitle,
                      "token": content.templateToken,
-                     
+
                        "image": {
 
                         "sources":[{
@@ -680,14 +799,14 @@ function renderTemplate (content) {
 
          }
 
-        
+
           //Send the response to Alexa
           console.log("ready to respond (ItemDetailsView): "+JSON.stringify(response));
            this.context.succeed(response);
            break;
        default:
           this.response.speak("Thanks for playing, goodbye");
-          this.emit(':responseReady');
+          break;
    }
 
 }
