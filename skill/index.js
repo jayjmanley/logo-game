@@ -11,11 +11,6 @@ const APP_ID = undefined;
 
 //This function returns a descriptive sentence about your data.  Before a user starts a quiz, they can ask about a specific data element,
 //like "Ohio."  The skill will speak the sentence from this function, pulling the data values from the appropriate record in your data.
-function getSpeechDescription(item)
-{
-    var sentence = item.StateName + " is the " + item.StatehoodOrder + "th state, admitted to the Union in " + item.StatehoodYear + ".  The capital of " + item.StateName + " is " + item.Capital + ", and the abbreviation for " + item.StateName + " is  strength='strong'/><say-as interpret-as='spell-out'>" + item.Abbreviation + "</say-as>.  I've added " + item.StateName + " to your Alexa app.  Which other state or capital would you like to know about?";
-    return sentence;
-}
 
 
 function getData(level)
@@ -166,11 +161,12 @@ const WELCOME_MESSAGE = "Welcome to the Logo Quiz Game! Are you ready to start?"
 //This is the message a user will hear when they start a quiz.
 const START_QUIZ_MESSAGE = "OK.  Get ready!";
 
+const LEVEL_SELECT_MESSAGE = "Choose a level one through nine. They range from easy to hard.";
 //This is the message a user will hear when they try to cancel or stop the skill, or when they finish a quiz.
 const EXIT_SKILL_MESSAGE = "Thank you for playing the Logo Quiz Game!  Let's play again soon!";
 
 //This is the message a user will hear after they ask (and hear) about a specific data element.
-const REPROMPT_SPEECH = "Which other state or capital would you like to know about?";
+const REPROMPT_SPEECH = "Hello";
 
 //This is the message a user will hear when they ask Alexa for help in your skill.
 const HELP_MESSAGE = "This is a logo guessing game, levels range from easy to hard. What would you like to do?";
@@ -230,8 +226,8 @@ const handlers = {
         this.emitWithState("Quiz");
     },
     "LevelSelectIntent": function() {
-        this.handler.state = states.QUIZ;
-        this.emitWithState("LevelSelect");
+        this.handler.state = states.START;
+        this.emitWithState("LevelSelectIntent");
     },
     "AnswerIntent": function() {
         this.handler.state = states.QUIZ;
@@ -307,6 +303,18 @@ const startHandlers = Alexa.CreateStateHandler(states.START,{
             this.emit(":responseReady");
         }
     },
+    "LevelSelectIntent": function() {
+        let content = {
+              "hasDisplaySpeechOutput" : LEVEL_SELECT_MESSAGE,
+              "bodyTemplateTitle" : "Choose a level",
+              "templateToken" : "LevelSelectView",
+              "askOrTell": ":ask",
+              "image": "https://s3-us-west-2.amazonaws.com/logo-game/logo-game/background/beginning%20background.jpg",
+              "sessionAttributes" : this.attributes
+          };
+          renderTemplate.call(this,content);
+
+    },
     "QuizIntent": function() {
         this.handler.state = states.QUIZ;
         this.attributes['STATE'] = this.handler.state;
@@ -320,10 +328,7 @@ const startHandlers = Alexa.CreateStateHandler(states.START,{
         console.log("IN QUIZ INTENT " + JSON.stringify(this.attributes));
         this.emitWithState("Quiz");
     },
-    "LevelSelectIntent": function() {
-        this.response.speak(EXIT_SKILL_MESSAGE);
-        this.emit(':responseReady');
-    },
+
     "AMAZON.StopIntent": function() {
         this.response.speak(EXIT_SKILL_MESSAGE);
         this.emit(':responseReady');
@@ -352,6 +357,11 @@ const startHandlers = Alexa.CreateStateHandler(states.START,{
 
 
 const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
+    "LevelSelect": function() {
+        console.log("level select");
+
+
+},
     "Quiz": function() {
 
         this.attributes["response"] = "";
@@ -361,8 +371,8 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
         this.attributes["first"] = 0;
         this.emitWithState("AskQuestion");
 
-
     },
+
     "AskQuestion": function() {
 
         console.log("in askQuestion: "+JSON.stringify(this.attributes));
@@ -435,7 +445,7 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
 
                         } else {
                             this.response.speak(speech).listen(question);
-                            this.emit(":responseReady");
+
                         }
 
                     },
@@ -528,7 +538,7 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ,{
         this.emit(":responseReady");
     },
     "Unhandled": function() {
-        this.emitWithState("AnswerIntent");
+        this.emit(":responseReady");
     },
     "AMAZON.PreviousIntent": function() {
           this.emitWithState("AnswerIntent");
@@ -696,14 +706,59 @@ function isSimulator() {
   var isSimulator = !this.event.context; //simulator doesn't send context
   return false;
 }
-
-
 function renderTemplate (content) {
    console.log("renderTemplate" + content.templateToken);
    switch(content.templateToken) {
        case "WelcomeScreenView":
          this.context.succeed(response);
          break;
+       case "LevelSelectView":
+         var response = {
+         "version": "1.0",
+         "response": {
+           "directives": [
+             {
+               "type": "Display.RenderTemplate",
+               "template": {
+                    "type": "BodyTemplate6",
+                    "token": content.templateToken,
+                    "backButton": "VISIBLE",
+                    "backgroundImage": {
+
+                     "sources":[{
+                     "url": content.image,
+                     }],
+                    },
+                    "textContent": {
+                      "primaryText": {
+                        "type": "RichText",
+                        "text": "<font size = '7'>"+"Choose a Level"+"</font>"
+                      }
+                    }
+                   }
+               }
+           ],
+           "outputSpeech": {
+             "type": "SSML",
+             "ssml": "<speak>"+content.hasDisplaySpeechOutput+"</speak>"
+           },
+           "reprompt": {
+             "outputSpeech": {
+               "type": "SSML",
+               "ssml": "<speak>"+content.hasDisplaySpeechOutput+"</speak>"
+             }
+           },
+           "shouldEndSession": content.askOrTell== ":tell",
+
+         },
+         "sessionAttributes": content.sessionAttributes
+
+       }
+        //Send the response to Alexa
+        console.log("ready to respond (leveldetailsview): "+JSON.stringify(response));
+        this.context.succeed(response);
+        break;
+
        case "FinalScoreView":
         var response = {
           "version": "1.0",
@@ -714,7 +769,7 @@ function renderTemplate (content) {
                 "backButton": "HIDDEN",
                 "template": {
                   "type": "BodyTemplate6",
-                  //"title": content.bodyTemplateTitle,
+                  "title": content.listTemplateTitle,
                   "token": content.templateToken,
                   "textContent": {
                     "primaryText": {
